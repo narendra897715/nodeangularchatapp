@@ -14,8 +14,4 @@ export class AppComponent {
    this.title = this._chatservice.rootscope();
   }
      
-  sendmessage = (message) => {
-     
-     this._chatservice.sendmessagemethod(message); 
-  }
 }

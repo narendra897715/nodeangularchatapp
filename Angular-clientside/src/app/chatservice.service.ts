@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import {messagedetails} from './app.interface'
+import {messagedetails} from './app.interface';
+import * as moment from 'moment';
+import { format } from 'util';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +15,12 @@ export class ChatserviceService {
       console.log('connected to server');
     });
     this.socket.on('newMessage',(email1)=>{
+      email1.createdAt = moment(email1.createdAt).format('h:mm a');
+      console.log(email1);
        this.text.push(email1);
+    })
+    this.socket.on('newLocationMessage',(text)=>{
+        this.text.push(text);
     })
       this.socket.on('disconnect',()=>{
         console.log('disconnected from server');
@@ -38,6 +45,11 @@ rootscope() {
     return this.text;
     
    }
+
+   sendlocation = (position) => {
+   this.socket.emit('sendlocationdetails',{'latitude':position.coords.latitude,'longitude':position.coords.longitude});
+   }
    
+
   
 }
